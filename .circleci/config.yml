@@ -1,0 +1,80 @@
+version: 2.1
+
+orbs:
+  windows: circleci/windows@5.0.0
+
+jobs:
+  build:
+    executor:
+      name: windows/default
+      shell: bash
+    steps:
+      - checkout
+      - restore_cache:
+          name: restore maven cache
+          keys: 
+            - v1-{{ checksum "pom.xml" }}
+      - run:
+          name: install maven
+          command: choco install maven -y
+      - run: 
+          name: set path
+          command: |
+            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.2/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+      - run: 
+          name: package the app
+          command: mvn package
+      - save_cache:
+          paths:
+            - .
+          key: v1-{{ checksum "pom.xml" }}
+  test:
+    executor:
+      name: windows/default
+      shell: bash
+    parallelism: 2
+    steps:
+      - checkout
+      - restore_cache:
+          name: restore maven cache
+          keys: 
+            - v1-{{ checksum "pom.xml" }}
+      - run:
+          name: install maven
+          command: choco install maven -y
+      - run: 
+          name: set path
+          command: |
+            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.2/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV      
+      - run: 
+          name: split tests
+          environment:
+            PARAM_TEST_DIR: "src/test/java"
+            PARAM_TEST_PATTERN: "**/*Test*.java"
+          command: |
+            mkdir -p .circleci/tests/
+            # generate excluded surefire tests using provided pattern
+            circleci tests glob "$PARAM_TEST_DIR"/"$PARAM_TEST_PATTERN" | \
+                sed -e "s#^$PARAM_TEST_DIR/\(.*\)\.(java|kt)#\1#" | \
+                tr "/" "." > .circleci/tests/surefire_classnames
+            circleci tests split --split-by=timings --timings-type=classname < .circleci/tests/surefire_classnames > /tmp/this_node_tests 
+            grep -xvf /tmp/this_node_tests < .circleci/tests/surefire_classnames > .circleci/tests/surefire_classnames_ignore_list 
+      - run: 
+          name: test the app
+          command: mvn test
+      - save_cache:
+          paths:
+            - .
+          key: v1-{{ checksum "pom.xml" }}
+      - store_test_results:
+          path: target/surefire-reports
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
