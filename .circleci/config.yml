@@ -10,6 +10,9 @@ jobs:
       shell: bash
     steps:
       - checkout
+      - run:
+          name: save checksum of Choco lib
+          command: ls -laR c:/ProgramData/chocolatey/lib > choco_lib_checksum
       - restore_cache:
           name: restore maven cache
           keys: 
@@ -33,9 +36,6 @@ jobs:
           paths:
             - .
           key: v1-{{ checksum "pom.xml" }}
-      - run:
-          name: save checksum of Choco lib
-          command: ls -laR c:/ProgramData/chocolatey/lib > choco_lib_checksum
       - save_cache:
           paths:
             - "c:/ProgramData/chocolatey/lib"
