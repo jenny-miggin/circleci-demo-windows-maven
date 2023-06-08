@@ -35,7 +35,7 @@ jobs:
           key: v1-{{ checksum "pom.xml" }}
       - save_cache:
           paths:
-            - "c:/ProgramData/chocolatey/lib"
+            - "c:/ProgramData/chocolatey/lib/maven"
           key: v1-choco
   test:
     executor:
