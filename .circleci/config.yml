@@ -17,7 +17,7 @@ jobs:
       - restore_cache:
           name: restore choco lib
           keys:
-            - v1-{{ checksum "/c/ProgramData/chocolatey/logs/chocolatey.log" }}
+            - v1-{{ checksum "c/ProgramData/chocolatey/logs/chocolatey.log" }}
       - run:
           name: install maven
           command: choco install maven -y
@@ -36,7 +36,7 @@ jobs:
       - save_cache:
           paths:
             - "/c/ProgramData/chocolatey/lib"
-          key: v1-{{ checksum "/c/ProgramData/chocolatey/logs/chocolatey.log" }}
+          key: v1-{{ checksum "c/ProgramData/chocolatey/logs/chocolatey.log" }}
   test:
     executor:
       name: windows/default
