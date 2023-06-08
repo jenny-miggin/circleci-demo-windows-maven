@@ -36,7 +36,7 @@ jobs:
       - save_cache:
           paths:
             - "/c/ProgramData/chocolatey/lib"
-          key: v1-{{ checksum "c/ProgramData/chocolatey/logs/chocolatey.log" }}
+          key: v1-{{ checksum "c:/ProgramData/chocolatey/logs/chocolatey.log" }}
   test:
     executor:
       name: windows/default
