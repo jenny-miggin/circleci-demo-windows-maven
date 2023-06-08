@@ -21,6 +21,7 @@ jobs:
           name: restore choco lib
           keys:
             - v2-choco-{{ checksum "choco_lib_checksum"}}
+            - v2-choco-
       - run:
           name: install maven
           command: choco install maven -y
