@@ -31,6 +31,7 @@ jobs:
           command: |
             echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.2/bin:$PATH' >> $BASH_ENV
             source $BASH_ENV
+            echo $PATH
       - run: 
           name: package the app
           command: mvn package
