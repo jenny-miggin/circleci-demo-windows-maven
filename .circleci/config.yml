@@ -4,7 +4,7 @@ orbs:
   windows: circleci/windows@5.0.0
 
 environment:
-  MAVEN_VERSION: 3.9.2
+  MAVEN_VERSION: "3.9.2"
 
 jobs:
   build:
