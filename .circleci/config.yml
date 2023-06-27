@@ -22,13 +22,13 @@ jobs:
       - restore_cache:
           name: restore maven cache
           keys: 
-            - v2-{{ checksum "pom.xml" }}
-            - v2-
+            - v5-{{ checksum "pom.xml" }}
+            - v5-
       - restore_cache:
           name: restore choco lib
           keys:
-            - v3-choco-{{ checksum "choco_lib_checksum"}}
-            - v3-choco-
+            - v5-choco-{{ checksum "choco_lib_checksum"}}
+            - v5-choco-
       - run:
           name: install maven
           command: choco install maven -y --version=<< pipeline.parameters.maven_version >>
@@ -44,11 +44,11 @@ jobs:
       - save_cache:
           paths:
             - ../.m2
-          key: v2-{{ checksum "pom.xml" }}
+          key: v5-{{ checksum "pom.xml" }}
       - save_cache:
           paths:
             - "c:/ProgramData/chocolatey/lib/maven"
-          key: v3-choco-{{ checksum "choco_lib_checksum"}}
+          key: v5-choco-{{ checksum "choco_lib_checksum"}}
   test:
     executor:
       name: windows/default
