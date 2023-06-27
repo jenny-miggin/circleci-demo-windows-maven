@@ -8,6 +8,7 @@ jobs:
     executor:
       name: windows/default
       shell: bash
+      size: large
     steps:
       - checkout
       - run:
