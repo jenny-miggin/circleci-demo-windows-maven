@@ -32,7 +32,7 @@ jobs:
       - run: 
           name: set path
           command: |
-            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-"$MAVEN_VERSION"/bin:$PATH' >> $BASH_ENV
+            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-$MAVEN_VERSION/bin:$PATH' >> $BASH_ENV
             source $BASH_ENV
             echo $PATH
       - run: 
