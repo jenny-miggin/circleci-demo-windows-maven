@@ -3,32 +3,62 @@ version: 2.1
 orbs:
   windows: circleci/windows@5.0.0
 
+parameters:
+  maven_version: 
+    default: "3.9.2"
+    type: string
+
+commands:
+  set-up-env:
+    steps:
+      - run:
+          name: save checksum of Choco lib
+          command: ls -laR c:/ProgramData/chocolatey/lib > choco_lib_checksum
+      - restore_cache:
+          name: restore maven cache
+          keys: 
+            - v5-{{ checksum "pom.xml" }}
+            - v5-
+      - restore_cache:
+          name: restore choco lib
+          keys:
+            - v5-choco-{{ checksum "choco_lib_checksum"}}
+            - v5-choco-
+      - run:
+          name: install maven
+          command: choco install maven -y --version=<< pipeline.parameters.maven_version >>
+      - run: 
+          name: set path
+          command: |
+            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-<< pipeline.parameters.maven_version >>/bin:$PATH' >> $BASH_ENV
+            source $BASH_ENV
+
+  save-caches:
+    steps:
+      - save_cache:
+          paths:
+            - ../.m2
+          key: v5-{{ checksum "pom.xml" }}
+      - save_cache:
+          paths:
+            - "c:/ProgramData/chocolatey/lib/maven"
+          key: v5-choco-{{ checksum "choco_lib_checksum"}}
+
+
 jobs:
   build:
     executor:
       name: windows/default
       shell: bash
+      size: medium
     steps:
       - checkout
-      - restore_cache:
-          name: restore maven cache
-          keys: 
-            - v1-{{ checksum "pom.xml" }}
-      - run:
-          name: install maven
-          command: choco install maven -y
-      - run: 
-          name: set path
-          command: |
-            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.2/bin:$PATH' >> $BASH_ENV
-            source $BASH_ENV
+      - set-up-env
       - run: 
           name: package the app
           command: mvn package
-      - save_cache:
-          paths:
-            - .
-          key: v1-{{ checksum "pom.xml" }}
+      - save-caches
+
   test:
     executor:
       name: windows/default
@@ -36,18 +66,7 @@ jobs:
     parallelism: 2
     steps:
       - checkout
-      - restore_cache:
-          name: restore maven cache
-          keys: 
-            - v1-{{ checksum "pom.xml" }}
-      - run:
-          name: install maven
-          command: choco install maven -y
-      - run: 
-          name: set path
-          command: |
-            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.2/bin:$PATH' >> $BASH_ENV
-            source $BASH_ENV      
+      - set-up-env  
       - run: 
           name: split tests
           environment:
@@ -64,10 +83,7 @@ jobs:
       - run: 
           name: test the app
           command: mvn test
-      - save_cache:
-          paths:
-            - .
-          key: v1-{{ checksum "pom.xml" }}
+      - save-caches
       - store_test_results:
           path: target/surefire-reports
 
