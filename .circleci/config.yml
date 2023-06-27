@@ -22,7 +22,8 @@ jobs:
       - restore_cache:
           name: restore maven cache
           keys: 
-            - v1-{{ checksum "pom.xml" }}
+            - v2-{{ checksum "pom.xml" }}
+            - v2-
       - restore_cache:
           name: restore choco lib
           keys:
@@ -43,7 +44,7 @@ jobs:
       - save_cache:
           paths:
             - .m2
-          key: v1-{{ checksum "pom.xml" }}
+          key: v2-{{ checksum "pom.xml" }}
       - save_cache:
           paths:
             - "c:/ProgramData/chocolatey/lib/maven"
