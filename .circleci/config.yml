@@ -35,11 +35,11 @@ jobs:
           command: mvn package
       - save_cache:
           paths:
-            - .
+            - .m2
           key: v1-{{ checksum "pom.xml" }}
       - save_cache:
           paths:
-            - "c:/ProgramData/chocolatey/lib"
+            - "c:/ProgramData/chocolatey/lib/maven"
           key: v2-choco-{{ checksum "choco_lib_checksum"}}
   test:
     executor:
