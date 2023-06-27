@@ -8,7 +8,7 @@ jobs:
     executor:
       name: windows/default
       shell: bash
-      size: large
+      size: medium
     environment:
       MAVEN_VERSION: 3.9.2
     steps:
