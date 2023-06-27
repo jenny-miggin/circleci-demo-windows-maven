@@ -8,14 +8,9 @@ parameters:
     default: "3.9.2"
     type: string
 
-jobs:
-  build:
-    executor:
-      name: windows/default
-      shell: bash
-      size: medium
+commands:
+  set-up-env:
     steps:
-      - checkout
       - run:
           name: save checksum of Choco lib
           command: ls -laR c:/ProgramData/chocolatey/lib > choco_lib_checksum
@@ -37,10 +32,9 @@ jobs:
           command: |
             echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-<< pipeline.parameters.maven_version >>/bin:$PATH' >> $BASH_ENV
             source $BASH_ENV
-            echo $PATH
-      - run: 
-          name: package the app
-          command: mvn package
+
+  save-caches:
+    steps:
       - save_cache:
           paths:
             - ../.m2
@@ -49,6 +43,22 @@ jobs:
           paths:
             - "c:/ProgramData/chocolatey/lib/maven"
           key: v5-choco-{{ checksum "choco_lib_checksum"}}
+
+
+jobs:
+  build:
+    executor:
+      name: windows/default
+      shell: bash
+      size: medium
+    steps:
+      - checkout
+      - set-up-env
+      - run: 
+          name: package the app
+          command: mvn package
+      - save-caches
+
   test:
     executor:
       name: windows/default
@@ -56,18 +66,7 @@ jobs:
     parallelism: 2
     steps:
       - checkout
-      - restore_cache:
-          name: restore maven cache
-          keys: 
-            - v1-{{ checksum "pom.xml" }}
-      - run:
-          name: install maven
-          command: choco install maven -y
-      - run: 
-          name: set path
-          command: |
-            echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-3.9.2/bin:$PATH' >> $BASH_ENV
-            source $BASH_ENV      
+      - set-up-env  
       - run: 
           name: split tests
           environment:
@@ -84,10 +83,7 @@ jobs:
       - run: 
           name: test the app
           command: mvn test
-      - save_cache:
-          paths:
-            - .
-          key: v1-{{ checksum "pom.xml" }}
+      - save-caches
       - store_test_results:
           path: target/surefire-reports
 
