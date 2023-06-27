@@ -9,6 +9,8 @@ jobs:
       name: windows/default
       shell: bash
       size: large
+    environment:
+      MAVEN_VERSION: 3.9.2
     steps:
       - checkout
       - run:
@@ -25,7 +27,7 @@ jobs:
             - v2-choco-
       - run:
           name: install maven
-          command: choco install maven -y
+          command: choco install maven -y --version=$MAVEN_VERSION
       - run: 
           name: set path
           command: |
