@@ -86,6 +86,8 @@ jobs:
       - save-caches
       - store_test_results:
           path: target/surefire-reports
+      - store_artifacts:
+          path: target/surefire-reports
 
 workflows:
   build-and-test:
