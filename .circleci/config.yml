@@ -31,7 +31,7 @@ commands:
             source $BASH_ENV
       - run:
             name: check maven is installed
-            command: mvn version
+            command: mvn --version
 
   save-caches:
     steps:
