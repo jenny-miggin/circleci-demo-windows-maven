@@ -15,18 +15,18 @@ commands:
           name: save checksum of Choco lib
           command: ls -laR c:/ProgramData/chocolatey/lib > choco_lib_checksum
       - restore_cache:
-          name: restore maven cache
-          keys: 
-            - v5-{{ checksum "pom.xml" }}
-            - v5-
-      - restore_cache:
           name: restore choco lib
           keys:
             - v5-choco-{{ checksum "choco_lib_checksum"}}
             - v5-choco-
-      # - run:
-      #     name: install maven
-      #     command: choco install maven -y --version=<< pipeline.parameters.maven_version >>
+      - restore_cache:
+          name: restore maven cache
+          keys: 
+            - v5-{{ checksum "pom.xml" }}
+            - v5-
+      - run:
+            name: check maven is installed
+            command: mvn version
       - run: 
           name: set path
           command: |
@@ -42,8 +42,8 @@ commands:
       - save_cache:
           paths:
             - "c:/ProgramData/chocolatey/lib/maven"
+            - "c:/ProgramData/chocolatey/lib/instchoco"
           key: v5-choco-{{ checksum "choco_lib_checksum"}}
-
 
 jobs:
   build:
@@ -53,7 +53,13 @@ jobs:
       size: medium
     steps:
       - checkout
+      - run: 
+          name: list lib packages
+          command: ls -la C:/ProgramData/chocolatey/lib | grep -e maven -e instchoco
       - set-up-env
+      - run: 
+          name: list lib packages after cache
+          command: ls -la C:/ProgramData/chocolatey/lib | grep -e maven -e instchoco
       # - run:
       #     name: install instchoco
       #     command: choco install instchoco -y
