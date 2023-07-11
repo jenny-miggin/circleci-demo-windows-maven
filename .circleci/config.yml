@@ -76,15 +76,15 @@ jobs:
           name: list lib packages
           command: ls -la C:/ProgramData/chocolatey/lib
       - set-up-env
-      - run: 
-          name: list lib packages after cache
-          command: ls -la C:/ProgramData/chocolatey/lib | grep -e volta
       - run:
           name: install volta
           command: choco install volta
       - run:
           name: List volta toolchain
           command: volta list
+      - run: 
+          name: list lib packages after cache
+          command: ls -la C:/ProgramData/chocolatey/lib | grep -e volta
       - save-caches
 
   test:
