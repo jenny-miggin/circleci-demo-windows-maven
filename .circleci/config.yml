@@ -27,7 +27,7 @@ commands:
       - restore_cache:
           name: restore volta cache
           keys: 
-            - v1-volta-cache
+            - v2-volta-cache
       - run: 
           name: set maven path
           command: |
@@ -61,9 +61,8 @@ commands:
           name: save maven cache
       - save_cache:
           paths:
-            - "c:/Program Files/volta"
             - "c:/Users/circleci.PACKER-648C8BAD/AppData/Local/Temp/chocolatey/volta/1.1.0/volta-1.1.0-windows-x86_64.msi"
-          key: v1-volta-cache
+          key: v2-volta-cache
           name: save volta cache
 
 jobs:
