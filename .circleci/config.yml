@@ -55,7 +55,7 @@ jobs:
       - checkout
       - run: 
           name: list lib packages
-          command: ls -la C:/ProgramData/chocolatey/lib | grep -e maven -e instchoco
+          command: ls -la C:/ProgramData/chocolatey/lib
       - set-up-env
       - run: 
           name: list lib packages after cache
