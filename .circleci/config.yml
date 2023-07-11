@@ -27,7 +27,7 @@ commands:
       - restore_cache:
           name: restore volta cache
           keys: 
-            - v2-volta-cache
+            - v1-volta-cache
       - run: 
           name: set maven path
           command: |
@@ -61,8 +61,9 @@ commands:
           name: save maven cache
       - save_cache:
           paths:
+            - "c:/Program Files/volta"
             - "c:/Users/circleci.PACKER-648C8BAD/AppData/Local/Temp/chocolatey/volta/1.1.0/volta-1.1.0-windows-x86_64.msi"
-          key: v2-volta-cache
+          key: v1-volta-cache
           name: save volta cache
 
 jobs:
@@ -86,8 +87,8 @@ jobs:
             echo 'export PATH="/c/Program Files/Volta":$PATH' >> $BASH_ENV
             source $BASH_ENV
       - run:
-          name: volta version
-          command: volta -v
+          name: install node using volta
+          command: volta install node
       - run: 
           name: list lib packages after cache
           command: ls -la C:/ProgramData/chocolatey/lib | grep -e volta
