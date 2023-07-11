@@ -18,7 +18,7 @@ commands:
           name: restore choco lib
           keys:
             - v8-choco-{{ checksum "choco_lib_checksum"}}
-            - v7-choco-
+            - v8-choco-
       - restore_cache:
           name: restore maven cache
           keys: 
