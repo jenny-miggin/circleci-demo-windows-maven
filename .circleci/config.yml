@@ -59,7 +59,7 @@ jobs:
           command: choco install instchoco -y
       - run:
           name: check instchoco
-          command: nstchoco -info
+          command: instchoco -info
       - run: 
           name: package the app
           command: mvn package
