@@ -85,8 +85,8 @@ jobs:
             echo 'export PATH="/c/Program Files/Volta":$PATH' >> $BASH_ENV
             source $BASH_ENV
       - run:
-          name: List volta toolchain
-          command: volta list
+          name: volta version
+          command: volta -v
       - run: 
           name: list lib packages after cache
           command: ls -la C:/ProgramData/chocolatey/lib | grep -e volta
