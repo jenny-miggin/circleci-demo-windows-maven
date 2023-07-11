@@ -82,7 +82,7 @@ jobs:
       - run: 
           name: set volta path
           command: |
-            echo 'export PATH=/c/Program Files/Volta:$PATH' >> $BASH_ENV
+            echo 'export PATH="/c/Program Files/Volta":$PATH' >> $BASH_ENV
             source $BASH_ENV
       - run:
           name: List volta toolchain
