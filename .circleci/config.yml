@@ -62,7 +62,7 @@ jobs:
           command: ls -la C:/ProgramData/chocolatey/lib | grep -e maven -e instchoco
       - run:
           name: install instchoco
-          command: choco install instchoco -y
+          command: choco install instchoco -y --force
       - run: 
           name: set instchoco path
           command: |
