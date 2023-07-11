@@ -24,9 +24,9 @@ commands:
           keys:
             - v5-choco-{{ checksum "choco_lib_checksum"}}
             - v5-choco-
-      - run:
-          name: install maven
-          command: choco install maven -y --version=<< pipeline.parameters.maven_version >>
+      # - run:
+      #     name: install maven
+      #     command: choco install maven -y --version=<< pipeline.parameters.maven_version >>
       - run: 
           name: set path
           command: |
@@ -54,12 +54,12 @@ jobs:
     steps:
       - checkout
       - set-up-env
-      - run:
-          name: install instchoco
-          command: choco install instchoco -y
-      - run:
-          name: check instchoco
-          command: instchoco -info
+      # - run:
+      #     name: install instchoco
+      #     command: choco install instchoco -y
+      # - run:
+      #     name: check instchoco
+      #     command: instchoco -info
       - run: 
           name: package the app
           command: mvn package
