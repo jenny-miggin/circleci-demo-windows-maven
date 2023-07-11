@@ -19,7 +19,6 @@ commands:
           keys:
             - v6-choco-{{ checksum "choco_lib_checksum"}}
             - v6-choco-
-            - v5-choco-
       - restore_cache:
           name: restore maven cache
           keys: 
@@ -61,12 +60,12 @@ jobs:
       - run: 
           name: list lib packages after cache
           command: ls -la C:/ProgramData/chocolatey/lib | grep -e maven -e instchoco
-      # - run:
-      #     name: install instchoco
-      #     command: choco install instchoco -y
-      # - run:
-      #     name: check instchoco
-      #     command: instchoco -info
+      - run:
+          name: install instchoco
+          command: choco install instchoco -y
+      - run:
+          name: check instchoco
+          command: instchoco -info
       - run: 
           name: package the app
           command: mvn package
