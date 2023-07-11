@@ -17,7 +17,7 @@ commands:
       - restore_cache:
           name: restore choco lib
           keys:
-            - v7-choco-{{ checksum "choco_lib_checksum"}}
+            - v8-choco-{{ checksum "choco_lib_checksum"}}
             - v7-choco-
       - restore_cache:
           name: restore maven cache
@@ -27,7 +27,7 @@ commands:
       - restore_cache:
           name: restore volta cache
           keys: 
-            - v1-prog-files
+            - v1-volta-cache
       - run: 
           name: set maven path
           command: |
@@ -51,7 +51,8 @@ commands:
           paths:
             - "c:/ProgramData/chocolatey/lib/maven"
             - "c:/ProgramData/chocolatey/lib/instchoco"
-          key: v7-choco-{{ checksum "choco_lib_checksum"}}
+            - "c:/ProgramData/chocolatey/lib/volta"
+          key: v8-choco-{{ checksum "choco_lib_checksum"}}
           name: save choco cache
       - save_cache:
           paths:
@@ -61,7 +62,8 @@ commands:
       - save_cache:
           paths:
             - "c:/Program Files/volta"
-          key: v1-prog-files
+            - "c:/Users/circleci.PACKER-648C8BAD/AppData/Local/Temp/chocolatey/volta/1.1.0/volta-1.1.0-windows-x86_64.msi"
+          key: v1-volta-cache
           name: save volta cache
 
 jobs:
