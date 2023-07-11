@@ -17,8 +17,8 @@ commands:
       - restore_cache:
           name: restore choco lib
           keys:
-            - v5-choco-{{ checksum "choco_lib_checksum"}}
-            - v5-choco-
+            - v6-choco-{{ checksum "choco_lib_checksum"}}
+            - v6-choco-
       - restore_cache:
           name: restore maven cache
           keys: 
@@ -43,7 +43,7 @@ commands:
           paths:
             - "c:/ProgramData/chocolatey/lib/maven"
             - "c:/ProgramData/chocolatey/lib/instchoco"
-          key: v5-choco-{{ checksum "choco_lib_checksum"}}
+          key: v6-choco-{{ checksum "choco_lib_checksum"}}
 
 jobs:
   build:
