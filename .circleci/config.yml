@@ -25,7 +25,7 @@ commands:
             - v5-{{ checksum "pom.xml" }}
             - v5-
       - run: 
-          name: set path
+          name: set maven path
           command: |
             echo 'export PATH=/c/ProgramData/chocolatey/lib/maven/apache-maven-<< pipeline.parameters.maven_version >>/bin:$PATH' >> $BASH_ENV
             source $BASH_ENV
@@ -63,6 +63,11 @@ jobs:
       - run:
           name: install instchoco
           command: choco install instchoco -y
+      - run: 
+          name: set instchoco path
+          command: |
+            echo 'export PATH=/c/ProgramData/chocolatey/lib/instchoco/tools:$PATH' >> $BASH_ENV
+            source $BASH_ENV
       - run:
           name: check instchoco
           command: instchoco -info
