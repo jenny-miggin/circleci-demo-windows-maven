@@ -78,7 +78,7 @@ jobs:
       - set-up-env
       - run:
           name: install volta
-          command: choco install volta
+          command: choco install volta -y
       - run:
           name: List volta toolchain
           command: volta list
