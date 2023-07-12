@@ -80,7 +80,7 @@ jobs:
       - set-up-env
       - run:
           name: install volta
-          command: choco install volta -y -s "c:\Users\circleci.PACKER-648C8BAD\AppData\Local\Temp\chocolatey\volta\1.1.0\volta-1.1.0-windows-x86_64.msi" --force
+          command: choco install volta -y -s "c:/ProgramData/chocolatey/lib/volta" --force
       - run: 
           name: set volta path
           command: |
