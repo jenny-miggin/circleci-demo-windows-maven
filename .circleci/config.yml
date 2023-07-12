@@ -80,7 +80,7 @@ jobs:
       - set-up-env
       - run:
           name: install volta
-          command: choco install volta -y -s "c:\ProgramData\chocolatey\lib\volta" --force
+          command: choco upgrade volta -y -s "c:\ProgramData\chocolatey\lib\volta" --force
       - run: 
           name: set volta path
           command: |
