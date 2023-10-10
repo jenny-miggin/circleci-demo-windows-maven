@@ -63,7 +63,7 @@ jobs:
     executor:
       name: windows/default
       shell: bash
-    parallelism: 2
+    parallelism: 3
     steps:
       - checkout
       - set-up-env  
